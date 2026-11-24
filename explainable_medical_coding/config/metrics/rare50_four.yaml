@@ -1,0 +1,12 @@
+- name: F1Score
+  configs:
+    average: "macro"
+- name: F1Score
+  configs:
+    average: "micro"
+- name: AUC
+  configs:
+    average: "macro"
+- name: AUC
+  configs:
+    average: "micro"

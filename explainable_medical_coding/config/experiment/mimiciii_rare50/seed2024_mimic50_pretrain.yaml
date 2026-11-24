@@ -1,0 +1,34 @@
+# @package _global_
+defaults:
+  - override /model: plm_icd
+  - override /lr_scheduler: warmup_linear_decay
+  - override /optimizer: adamw
+  - override /callbacks: defaults
+  - override /data: mimiciii_50
+  - override /loss: bce
+
+seed: 2024
+deterministic: true
+gpu: 2
+name: mimiciii-50-pretrain-seed2024
+load_model: null
+encoder_initialization_checkpoint: null
+
+dataloader:
+  max_batch_size: 2
+  batch_size: 16
+optimizer:
+  configs:
+    lr: 5e-5
+    weight_decay: 0
+trainer:
+  epochs: 20
+  validate_on_training_data: false
+  threshold_tuning: true
+  clip_grad_norm: 1
+  evaluate_test: false
+data:
+  max_length: 6000
+model:
+  configs:
+    dropout: 0.2

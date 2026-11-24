@@ -1,0 +1,54 @@
+# @package _global_
+defaults:
+  - override /model: plm_icd
+  - override /lr_scheduler: warmup_linear_decay
+  - override /optimizer: adamw
+  - override /callbacks: formal_f1_micro
+  - override /data: mimiciii_full
+  - override /loss: paired_consistency
+
+seed: 13
+deterministic: true
+gpu: 0
+name: formal-s13-e7-b3-frequency-positive
+load_model: null
+initialization_checkpoint: artifacts/init_seed13.pt
+save_initialization_checkpoint: null
+
+paired_training:
+  enabled: true
+  augmentation_seed: 13
+
+dataloader:
+  max_batch_size: 2
+  batch_size: 16
+
+optimizer:
+  configs:
+    lr: 5e-5
+    weight_decay: 0
+
+trainer:
+  epochs: 30
+  validate_on_training_data: false
+  threshold_tuning: true
+  clip_grad_norm: 1
+  evaluate_test: true
+  max_optimizer_steps: null
+
+data:
+  max_length: 6000
+
+model:
+  configs:
+    dropout: 0.2
+
+loss:
+  configs:
+    consistency_lambda: 0.3
+    consistency_mode: frequency_positive
+    frequency_file: artifacts/frequency/label_frequency.csv
+    frequency_gamma: 0.5
+    frequency_weight_max: 5.0
+    frequency_weight_ratio_max: 5.0
+    consistency_divergence: mse

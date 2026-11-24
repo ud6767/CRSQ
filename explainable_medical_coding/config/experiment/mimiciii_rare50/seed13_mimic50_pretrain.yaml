@@ -1,0 +1,40 @@
+# @package _global_
+# Stage 1 of the Yang et al. (2022) Rare50 protocol: train the shared
+# PLM-ICD encoder on the common MIMIC-III-50 benchmark.
+defaults:
+  - override /model: plm_icd
+  - override /lr_scheduler: warmup_linear_decay
+  - override /optimizer: adamw
+  - override /callbacks: defaults
+  - override /data: mimiciii_50
+  - override /loss: bce
+
+seed: 13
+deterministic: true
+gpu: 0
+name: mimiciii-50-pretrain-seed13
+load_model: null
+encoder_initialization_checkpoint: null
+
+dataloader:
+  max_batch_size: 2
+  batch_size: 16
+
+optimizer:
+  configs:
+    lr: 5e-5
+    weight_decay: 0
+
+trainer:
+  epochs: 20
+  validate_on_training_data: false
+  threshold_tuning: true
+  clip_grad_norm: 1
+  evaluate_test: false
+
+data:
+  max_length: 6000
+
+model:
+  configs:
+    dropout: 0.2

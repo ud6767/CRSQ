@@ -1,0 +1,19 @@
+- name: WandbCallback
+  configs:
+    project: explainable-medical-coding-formal
+    entity: null
+- name: SaveBestModelCallback
+  configs:
+    split: validation
+    target: all
+    metric: f1_micro
+- name: SaveLastModelCallback
+  configs: {}
+- name: EarlyStoppingCallback
+  configs:
+    split: validation
+    target: all
+    metric: f1_micro
+    patience: 5
+    min_delta: 0.0003
+    mode: max

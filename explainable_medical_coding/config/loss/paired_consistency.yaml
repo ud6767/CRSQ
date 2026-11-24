@@ -1,0 +1,9 @@
+name: paired_supervised_consistency_loss
+configs:
+  consistency_lambda: 0.0
+  consistency_mode: uniform
+  consistency_divergence: mse
+  retention_lambda: 0.0
+  retention_threshold: 0.3333333333
+  retention_margin: 0.2
+  retention_warmup_epochs: 1

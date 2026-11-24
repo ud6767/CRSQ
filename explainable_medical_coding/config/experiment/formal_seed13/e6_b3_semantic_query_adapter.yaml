@@ -1,0 +1,64 @@
+# @package _global_
+defaults:
+  - override /model: plm_icd
+  - override /lr_scheduler: warmup_linear_decay
+  - override /optimizer: adamw
+  - override /callbacks: formal_f1_micro
+  - override /data: mimiciii_full
+  - override /loss: paired_consistency
+
+seed: 13
+deterministic: true
+gpu: 0
+name: formal-s13-e6-b3-semantic-query-adapter
+load_model: null
+initialization_checkpoint: artifacts/init_seed13.pt
+save_initialization_checkpoint: null
+
+paired_training:
+  enabled: true
+  augmentation_seed: 13
+
+semantic_query_adapter:
+  enabled: true
+  description_path: artifacts/knowledge/gki_icd/code_description.csv
+  synonym_path: artifacts/knowledge/gki_icd/code_synonym.json
+  hierarchy_relation_path: artifacts/knowledge/gki_icd/code_hierarchy.csv
+  hierarchy_group_path: artifacts/knowledge/gki_icd/group_description.csv
+  hierarchy_extra_description_path: artifacts/knowledge/gki_icd/extra_code_description.csv
+  max_synonyms: 5
+  batch_size: 128
+  max_length: 128
+
+dataloader:
+  max_batch_size: 2
+  batch_size: 16
+
+optimizer:
+  configs:
+    lr: 5e-5
+    weight_decay: 0
+
+trainer:
+  epochs: 30
+  validate_on_training_data: false
+  threshold_tuning: true
+  clip_grad_norm: 1
+  evaluate_test: true
+  max_optimizer_steps: null
+
+data:
+  max_length: 6000
+
+model:
+  configs:
+    dropout: 0.2
+    semantic_query_adapter: true
+    semantic_query_fragments: 3
+    semantic_query_alpha: 0.1
+
+loss:
+  configs:
+    consistency_lambda: 0.3
+    consistency_mode: split_normalized
+    consistency_divergence: mse

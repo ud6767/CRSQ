@@ -1,0 +1,28 @@
+defaults:
+  - _self_
+  - data: mimiciii_full
+  - dataloader: defaults
+  - model: plm_icd
+  - trainer: defaults
+  - optimizer: adam
+  - lr_scheduler: defaults
+  - metrics: defaults
+  - callbacks: defaults
+  - loss: bce
+  - experiment: null
+
+
+hydra:
+  output_subdir: null
+seed: 1337
+deterministic: false
+gpu: 0
+name: null
+debug: false
+load_model: null # The path where to find the model, text encoder and label encoder
+distillation: false
+paired_training:
+  enabled: false
+  augmentation_seed: 13
+  easy_negative_threshold: 0.01
+  diagnostic_fractions: [0.1, 0.5, 1.0]
